@@ -5,12 +5,10 @@ export default class Nivel1 extends Phaser.Scene {
   create() {
     const map = this.make.tilemap({ key: "map" });
     const conjutoPatronRuta = map.addTilesetImage("ruta", "ruta");
-
     const fondoLayer = map.createLayer("fondo", conjutoPatronRuta, 0, 0);
-
+    const barandaLayer = map.addTilesetImage("baranda", "baranda");
     const pjObjectosLayer = map.getObjectLayer("pj");
     let spawnPoint = map.findObject("pj", (obj) => obj.name === "cadete");
-
     this.jugador = this.physics.add.sprite(
       spawnPoint.x,
       spawnPoint.y,
@@ -20,10 +18,33 @@ export default class Nivel1 extends Phaser.Scene {
     this.jugador.body.allowGravity = false;
     this.jugador.setVelocityY(-300);
     // meta this.jugador.visible = false;
-
+    const autoLayer = map.getObjectLayer("auto1");
+    //spawnPoint = map.findObject("auto1", (obj) => obj.name === "auto");
+      this.autos=this.physics.add.group();
+      autoLayer.objects.forEach((objData) => {
+        const { x = 0, y = 0, name } = objData;
+        switch(name){
+          case "auto":{
+            const auto = this.autos.create(
+              x,
+              y,
+              "autorojo"
+              ).setScale(0.3); 
+              break;
+          }
+          case "autov":{
+            const auto = this.autos.create(
+              x,
+              y,
+              "autoverde"
+              ).setScale(0.3); 
+              break;
+          }
+        }
+      });
+      
     //  Input Events
     this.cursors = this.input.keyboard.createCursorKeys();
-
     this.cameras.main.startFollow(this.jugador);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
