@@ -17,9 +17,7 @@ export default class Nivel1 extends Phaser.Scene {
     this.jugador.setScale(0.2);
     this.jugador.body.allowGravity = false;
     this.jugador.setVelocityY(-300);
-    // meta this.jugador.visible = false;
     const autoLayer = map.getObjectLayer("auto1");
-    //spawnPoint = map.findObject("auto1", (obj) => obj.name === "auto");
       this.autos=this.physics.add.group();
       autoLayer.objects.forEach((objData) => {
         const { x = 0, y = 0, name } = objData;
@@ -42,7 +40,12 @@ export default class Nivel1 extends Phaser.Scene {
           }
         }
       });
+    this.physics.add.collider(this.jugador,this.autos, function (jugador,autos)
+      this.auto.destroy()
+    )
+
       
+
     //  Input Events
     this.cursors = this.input.keyboard.createCursorKeys();
     this.cameras.main.startFollow(this.jugador);
